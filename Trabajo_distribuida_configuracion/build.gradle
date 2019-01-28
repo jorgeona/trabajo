@@ -1,0 +1,42 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.wildfly.swarm:wildfly-swarm-plugin:2016.10.0"
+        classpath "io.thorntail:thorntail-gradle-plugin:2.3.0.Final"       
+    }
+}
+	apply plugin: 'thorntail'
+	apply plugin: 'wildfly-swarm'
+	apply plugin: 'java'
+	apply plugin: 'application'
+	apply plugin: 'war'
+mainClassName = 'uce.ona.jorge.main'
+swarm {
+    properties {
+        swarm.http.port = 8181
+        swarm.http.host = 'localhost'    
+    }
+}
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+        url 'https://maven.repository.redhat.com/nexus/content/repositories/thirdparty-releases/'
+    }
+    maven {
+    url "https://repo.gradle.org/gradle/libs-releases-local"
+  }
+}
+dependencies {
+//Dependecias principales thornatil base de datos PostgresSql y persistencia
+    compile group: 'io.thorntail', name: 'jaxrs', version: '2.3.0.Final'
+	compile group: 'io.thorntail', name: 'cdi', version: '2.3.0.Final'
+	compile group: 'commons-io', name: 'commons-io', version: '2.6'
+	// https://mvnrepository.com/artifact/org.wildfly.swarm/microprofile-config-api
+compile group: 'org.wildfly.swarm', name: 'microprofile-config-api', version: '1.2.1'
+	
+//Dependecias principales thornatil
+	testCompile "io.rest-assured:rest-assured:3.0.0" 
+}
